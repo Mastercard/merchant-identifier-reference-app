@@ -156,31 +156,9 @@
 
     <build>
         <finalName>${project.artifactId}</finalName>
-        <resources>
-            <resource>
-                <directory>src/main/resources</directory>
-                <filtering>false</filtering>
-            </resource>
-            <!-- Apply filtering to index.html to apply Google Maps API key -->
-            <!--<resource>
-                <directory>src/main/webapp/WEB-INF/static</directory>
-                <filtering>true</filtering>
-                <includes>
-                    <include>index.html</include>
-                </includes>
-                <targetPath>${project.build.directory}/frontend</targetPath>
-            </resource> -->
-            <!-- Copy frontend files to build directory -->
-            <!--<resource>
-                <directory>src/main/webapp/WEB-INF/static</directory>
-                <filtering>false</filtering>
-                <excludes>
-                    <exclude>index.html</exclude>
-                    <exclude>tests/**</exclude>
-                </excludes>
-                <targetPath>${project.build.directory}/frontend</targetPath>
-            </resource>-->
-        </resources>
+        <filters>
+            <filter>src/main/resources/google-maps.properties</filter>
+        </filters>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -235,7 +213,7 @@
             <plugin>
                 <groupId>com.github.warmuuh</groupId>
                 <artifactId>libsass-maven-plugin</artifactId>
-                <version>0.1.7-libsass_3.2.4</version>
+                <version>0.1.3</version>
                 <executions>
                     <execution>
                         <phase>generate-resources</phase>
@@ -250,20 +228,30 @@
                     <includePath>${basedir}/src/main/sass/plugins/</includePath>
                 </configuration>
             </plugin>
-            <!--<plugin>
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
                 <version>3.0.0</version>
                 <configuration>
                     <webResources>
                         <resource>
-                            <directory>${project.build.directory}/frontend</directory>
+                            <filtering>true</filtering>
+                            <directory>src/main/webapp/WEB-INF/static</directory>
+                            <includes>
+                                <include>**/*.html</include>
+                            </includes>
                             <targetPath>WEB-INF/static</targetPath>
                         </resource>
                     </webResources>
                 </configuration>
-            </plugin>-->
+            </plugin>
         </plugins>
     </build>
+
+    <profiles>
+        <profile>
+            <id>demo</id>
+        </profile>
+    </profiles>
 
 </project>

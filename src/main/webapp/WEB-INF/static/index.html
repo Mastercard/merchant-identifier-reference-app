@@ -1,11 +1,76 @@
-<html>
-<head>
-    <link href="css/main.css" type="text/css" rel="stylesheet" />
-</head>
+<!--
+    Copyright 2016 MasterCard International.
 
-<body>
-    <h1>Reference Implementation</h1>
+    Redistribution and use in source and binary forms, with or without modification, are
+    permitted provided that the following conditions are met:
 
-</body>
+    Redistributions of source code must retain the above copyright notice, this list of
+    conditions and the following disclaimer.
+    Redistributions in binary form must reproduce the above copyright notice, this list of
+    conditions and the following disclaimer in the documentation and/or other materials
+    provided with the distribution.
+    Neither the name of the MasterCard International Incorporated nor the names of its
+    contributors may be used to endorse or promote products derived from this software
+    without specific prior written permission.
+    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
+    EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+    OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT
+    SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+    INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED
+    TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+    OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER
+    IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
+    IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+    SUCH DAMAGE.
+-->
 
+<html lang="en" class="no-js">
+    <head>
+        <meta charset="UTF-8">
+        <title>Merchant Identifier Reference App</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+
+        <!-- jquery -->
+        <script src="js/libs/jquery/jquery.min.js"></script>
+        <!-- sanitize -->
+        <link rel="stylesheet" href="js/libs/sanitize/sanitize.css">
+
+        <script src="js/main.js"></script>
+        <link href="css/font.css" type="text/css" rel="stylesheet" />
+        <link href="css/main.css" type="text/css" rel="stylesheet" />
+    </head>
+    <body>
+        <div class="main-container">
+            <header id="header-container" class="header-container">
+                <div id="mobile-menu-icon" class="menu-icon" onclick="handleMenuClick()"></div>
+                <div class="header-logo-title">
+                    <div class="logo">
+                        <img src="images/mc_dev_logo_hrz.svg" />
+                    </div>
+                    <div class="logo-mobile">
+                        <img src="images/cogs.svg" />
+                    </div>
+                    <div class="title">
+                        Merchant Identifier Reference Application
+                    </div>
+                </div>
+                <div class="header-documentation">
+                    <div class="github-link">
+                        <a href="https://github.com/Mastercard/api-ref-app-merchant-identifier" target="_blank">View on Github</a>
+                    </div>
+                    <div class="documentation-button">
+                        <a href="https://developer.mastercard.com/documentation/merchant-identifier" target="_blank">View Documentation</a>
+                    </div>
+                </div>
+            </header>
+
+            <content id="content-container" class="content-container">
+                <div id="mobile-menu-overlay" class="hide">
+                    <a href="https://github.com/Mastercard/api-ref-app-merchant-identifier" target="_blank">View on Github</a>
+                    <a href="https://developer.mastercard.com/documentation/merchant-identifier" target="_blank">View Documentation</a>
+                </div>
+                <iframe id="iframe-view" src="ionic-app.html" class="iframe-view"></iframe>
+            </content>
+        </div>
+    </body>
 </html>

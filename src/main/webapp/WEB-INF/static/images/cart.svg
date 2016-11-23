@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="24px" height="22px" viewBox="0 0 24 22" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 41 (35326) - http://www.bohemiancoding.com/sketch -->
+    <title>cart</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Merchant_ID_transactions" transform="translate(-378.000000, -324.000000)" stroke="#000000">
+            <g id="Group-4" transform="translate(350.000000, 135.000000)">
+                <g id="1" transform="translate(0.000000, 173.540000)">
+                    <g id="cart" transform="translate(28.000000, 16.080000)">
+                        <path d="M3.9356,3.52407467 L6.0103,12.646281 C6.0085,12.6543077 6.0046,12.661632 6.003,12.6699597 L5.4493,14.6459243 C5.3599,15.0842807 5.6965,15.4917343 6.1406,15.4917343 L20.4175,15.4917343" id="Shape"></path>
+                        <path d="M22.9097,3.52407467 L3.9356,3.52407467 L4.425,1.22493633 C4.3415,0.832231667 3.9944,0.551900333 3.5929,0.551900333 L0.6288,0.551900333" id="Shape"></path>
+                        <path d="M6.0103,12.6461807 L20.2052,11.1052613 C20.6012,11.1052613 20.9436,10.833358 21.0337,10.4485797 L23.3441,1.933089" id="Shape"></path>
+                        <ellipse id="Oval" cx="6.9774" cy="18.9872473" rx="1.5164" ry="1.51453167"></ellipse>
+                        <ellipse id="Oval" cx="18.9016" cy="18.9872473" rx="1.5159" ry="1.51453167"></ellipse>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

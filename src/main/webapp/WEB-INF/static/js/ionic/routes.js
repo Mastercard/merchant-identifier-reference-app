@@ -25,39 +25,19 @@
  *
  */
 
-package com.mastercard.refapp.merchantid.controller;
+angular.module('mcdapimid.routes', [])
 
-import com.mastercard.api.core.exception.*;
-import com.mastercard.api.core.model.RequestMap;
-import com.mastercard.api.merchantidentifier.MerchantIdentifier;
-import com.mastercard.refapp.merchantid.model.MerchantIdQueryRequest;
-import com.mastercard.refapp.merchantid.utils.Constants;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.http.MediaType;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
-
-@Controller
-@RequestMapping(value = "/merchantid", produces = Constants.APPLICATION_JSON_UTF8_VALUE)
-public class MerchantIdentifierController{
-
-    private static final Logger logger = LoggerFactory.getLogger(MerchantIdentifierController.class);
-
-    @RequestMapping(value = "query", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseBody
-    public MerchantIdentifier query(@RequestBody MerchantIdQueryRequest merchantIdQueryRequest) throws ApiException{
-
-        logger.info("Requested merchant id: " + merchantIdQueryRequest.getMerchantId());
-
-        RequestMap map = new RequestMap();
-        map.put("MerchantId", merchantIdQueryRequest.getMerchantId());
-        map.put("Type", merchantIdQueryRequest.getQueryType());
-
-        MerchantIdentifier merchantIdentifier = MerchantIdentifier.query(map);
-
-        return merchantIdentifier;
-    }
-}
-
-
+    .config(function ($stateProvider, $urlRouterProvider) {
+        $stateProvider
+            .state('accountDetails', {
+                url: '/account-details',
+                templateUrl: 'templates/account-details.html',
+                controller: 'AccountDetailsController'
+            }).state('transactionDetails', {
+            url: '/transaction-details/:accountId/:id',
+            templateUrl: 'templates/transaction-details.html',
+            controller: 'TransactionDetailsController'
+        });
+        // if none of the above states are matched, use this as the fallback
+        $urlRouterProvider.otherwise('/account-details');
+    });

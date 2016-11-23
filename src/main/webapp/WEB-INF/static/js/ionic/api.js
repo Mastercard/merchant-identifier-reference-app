@@ -25,39 +25,26 @@
  *
  */
 
-package com.mastercard.refapp.merchantid.controller;
-
-import com.mastercard.api.core.exception.*;
-import com.mastercard.api.core.model.RequestMap;
-import com.mastercard.api.merchantidentifier.MerchantIdentifier;
-import com.mastercard.refapp.merchantid.model.MerchantIdQueryRequest;
-import com.mastercard.refapp.merchantid.utils.Constants;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.http.MediaType;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
-
-@Controller
-@RequestMapping(value = "/merchantid", produces = Constants.APPLICATION_JSON_UTF8_VALUE)
-public class MerchantIdentifierController{
-
-    private static final Logger logger = LoggerFactory.getLogger(MerchantIdentifierController.class);
-
-    @RequestMapping(value = "query", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseBody
-    public MerchantIdentifier query(@RequestBody MerchantIdQueryRequest merchantIdQueryRequest) throws ApiException{
-
-        logger.info("Requested merchant id: " + merchantIdQueryRequest.getMerchantId());
-
-        RequestMap map = new RequestMap();
-        map.put("MerchantId", merchantIdQueryRequest.getMerchantId());
-        map.put("Type", merchantIdQueryRequest.getQueryType());
-
-        MerchantIdentifier merchantIdentifier = MerchantIdentifier.query(map);
-
-        return merchantIdentifier;
-    }
-}
+angular.module('mcdapimid.api', [])
 
 
+    .service('MIDApi', ['$http', function($http) {
+        return {
+            query: function(merchantId, callback) {
+                var data = {
+                    merchantId: merchantId,
+                    queryType: 'FuzzyMatch'
+                }
+                $http.post('/ref-impl-merchant-identifier/merchantid/query', data).then(function successCallback(response) {
+                    callback(response.data)
+                }, function errorCallback(response) {
+                    $http.get('/ref-impl-merchant-identifier/data/dummy-response.json').then(function successCallback(response) {
+                        callback(response.data)
+                    }, function errorCallback(response) {
+                    });
+                });
+
+            }
+        };
+
+    }]);

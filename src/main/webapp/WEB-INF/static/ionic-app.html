@@ -1,0 +1,65 @@
+<!--
+    Copyright 2016 MasterCard International.
+
+    Redistribution and use in source and binary forms, with or without modification, are
+    permitted provided that the following conditions are met:
+
+    Redistributions of source code must retain the above copyright notice, this list of
+    conditions and the following disclaimer.
+    Redistributions in binary form must reproduce the above copyright notice, this list of
+    conditions and the following disclaimer in the documentation and/or other materials
+    provided with the distribution.
+    Neither the name of the MasterCard International Incorporated nor the names of its
+    contributors may be used to endorse or promote products derived from this software
+    without specific prior written permission.
+    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
+    EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+    OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT
+    SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+    INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED
+    TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+    OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER
+    IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
+    IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+    SUCH DAMAGE.
+-->
+
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+    <head>
+        <meta charset="UTF-8">
+        <title>Merchant Identifier Reference App</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+
+        <link href="css/font.css" type="text/css" rel="stylesheet" />
+        <link href="css/ionic.app.css" type="text/css" rel="stylesheet" />
+        <link href="css/ionic.app.customize.css" type="text/css" rel="stylesheet" />
+
+        <!-- ionic/angularjs js -->
+        <script src="https://maps.google.com/maps/api/js?libraries=placeses,visualization,drawing,geometry,places&key=${google.maps.api.key}"></script>
+        <script src="js/libs/ionic/ionic.bundle.min.js"></script>
+        <script src="js/libs/lodash/lodash.min.js"></script>
+        <script src="js/libs/angular-simple-logger/angular-simple-logger.min.js"></script>
+        <script src="js/libs/isoCurrency/isoCurrency.min.js"></script>
+        <script src="js/libs/ngmap/ng-map.min.js"></script>
+        <script src="js/libs/ngmoment/moment.min.js"></script>
+        <script src="js/libs/ngmoment/angular-moment.min.js"></script>
+
+        <!-- your app's js -->
+        <script src="js/ionic/app.js"></script>
+        <script src="js/ionic/controllers.js"></script>
+        <script src="js/ionic/routes.js"></script>
+        <script src="js/ionic/services.js"></script>
+        <script src="js/ionic/filters.js"></script>
+        <script src="js/ionic/api.js"></script>
+    </head>
+
+    <body ng-app="mcdapimid">
+        <ion-nav-bar class="bar-positive">
+            <ion-nav-back-button class="button-icon icon">
+                <img class="back-arrow" src="images/back.svg" />
+            </ion-nav-back-button>
+        </ion-nav-bar>
+        <ion-nav-view></ion-nav-view>
+    </body>
+</html>

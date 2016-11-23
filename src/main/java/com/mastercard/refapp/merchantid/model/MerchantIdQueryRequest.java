@@ -25,39 +25,28 @@
  *
  */
 
-package com.mastercard.refapp.merchantid.controller;
+package com.mastercard.refapp.merchantid.model;
 
-import com.mastercard.api.core.exception.*;
-import com.mastercard.api.core.model.RequestMap;
-import com.mastercard.api.merchantidentifier.MerchantIdentifier;
-import com.mastercard.refapp.merchantid.model.MerchantIdQueryRequest;
-import com.mastercard.refapp.merchantid.utils.Constants;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.http.MediaType;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import java.io.Serializable;
 
-@Controller
-@RequestMapping(value = "/merchantid", produces = Constants.APPLICATION_JSON_UTF8_VALUE)
-public class MerchantIdentifierController{
+public class MerchantIdQueryRequest implements Serializable {
 
-    private static final Logger logger = LoggerFactory.getLogger(MerchantIdentifierController.class);
+    private String merchantId;
+    private String queryType;
 
-    @RequestMapping(value = "query", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseBody
-    public MerchantIdentifier query(@RequestBody MerchantIdQueryRequest merchantIdQueryRequest) throws ApiException{
+    public String getMerchantId() {
+        return merchantId;
+    }
 
-        logger.info("Requested merchant id: " + merchantIdQueryRequest.getMerchantId());
+    public void setMerchantId(String merchantId) {
+        this.merchantId = merchantId;
+    }
 
-        RequestMap map = new RequestMap();
-        map.put("MerchantId", merchantIdQueryRequest.getMerchantId());
-        map.put("Type", merchantIdQueryRequest.getQueryType());
+    public String getQueryType() {
+        return queryType;
+    }
 
-        MerchantIdentifier merchantIdentifier = MerchantIdentifier.query(map);
-
-        return merchantIdentifier;
+    public void setQueryType(String queryType) {
+        this.queryType = queryType;
     }
 }
-
-
