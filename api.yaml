@@ -1,0 +1,264 @@
+swagger: "2.0"
+info:
+  title: Merchant Identifier API
+  description: Merchant Identifier is a tool that provides rich merchant data based on the merchant's name as provided by the acquirer. It includes recognizable merchant descriptors and location information, including merchant DBA name, Merchant Category Code (MCC), street address, city, state, postal code, country, and sales channels.
+  version: "v1"
+  x-artifactId: merchant-identifier
+host: api.mastercard.com
+schemes:
+  - https
+basePath: /merchantid/v1
+consumes:
+  - application/json
+produces:
+  - application/json
+paths:
+  /merchantid:
+    get:
+      summary: Returns merchant descriptor and locator information based on the criteria you provide. Information returned includes merchant DBA name, merchant category code (MCC), street address, city, state, postal code, country, and sales channels.
+      description: Returns merchant descriptor and locator information based on the criteria you provide. Information returned includes merchant DBA name, merchant category code (MCC), street address, city, state, postal code, country, and sales channels.
+      parameters:
+        - name: MerchantId
+          in: query
+          type: string
+          minLength: 9
+          description: |
+            Merchant's name as provided by the acquirer (i.e. descriptor found on a cardholder statement). For example: 7-ELEVEN#22966D2VANCOUVERBC
+          required: true
+          x-example: MICROSOFT
+        - name: Type
+          in: query
+          type: string
+          description: Determines how the search is performed. ExactMatch returns either the one merchant that best fits the description or no results at all. FuzzyMatch returns 0-20 merchants that are similar to the transaction descriptor. If Type is not provided, defaults to ExactMatch.
+          required: false
+          x-example: FuzzyMatch
+      responses:
+        200:
+          description: Merchant details
+          schema:
+            $ref: '#/definitions/MerchantIdentifierResponse'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/ErrorsResponse'
+
+      x-samples:
+        -
+          name: example_merchant_identifier
+          request:
+            application/json: |-
+              {
+                "MerchantId" : "MICROSOFT",
+                "Type" : "FuzzyMatch"
+              }
+          response:
+            application/json: |-
+              {
+                "MerchantIds": {
+                  "Message": "7 merchants found.",
+                  "ReturnedMerchants": {
+                    "Merchant": [
+                      {
+                        "Address": {
+                          "Line1": "ONE MICROSOFT WAY",
+                          "City": "REDMOND",
+                          "PostalCode": "98052",
+                          "CountrySubdivision": {
+                            "Code": "WA"
+                          },
+                          "Country": {
+                          }
+                        },
+                        "PhoneNumber": "8003865550",
+                        "MerchantCategory": "4816 - COMPUTER NETWORK-INFORMATION SERVICES",
+                        "MerchantDbaName": "MICROSOFT",
+                        "DescriptorText": "MICROSOFT*ONECAREBILL.MS.NETWA",
+                        "LegalCorporateName": "MICROSOFT CORPORATION",
+                        "LocationId": "288560095"
+                      },
+                      {
+                        "Address": {
+                          "Line1": "ONE MICROSOFT WAY",
+                          "City": "REDMOND",
+                          "PostalCode": "98052",
+                          "CountrySubdivision": {
+                            "Code": "WA"
+                          },
+                          "Country": {
+                          }
+                        },
+                        "PhoneNumber": "8003865550",
+                        "MerchantCategory": "4816 - COMPUTER NETWORK-INFORMATION SERVICES",
+                        "MerchantDbaName": "MICROSOFT",
+                        "DescriptorText": "MICROSOFT*ONECARE08003865550WA",
+                        "LegalCorporateName": "MICROSOFT CORPORATION",
+                        "LocationId": "288560095"
+                      },
+                      {
+                        "Address": {
+                          "Line1": "ONE MICROSOFT WAY",
+                          "City": "REDMOND",
+                          "PostalCode": "98052",
+                          "CountrySubdivision": {
+                            "Code": "WA"
+                          },
+                          "Country": {
+                          }
+                        },
+                        "PhoneNumber": "8003865550",
+                        "MerchantCategory": "4816 - COMPUTER NETWORK-INFORMATION SERVICES",
+                        "MerchantDbaName": "MICROSOFT",
+                        "DescriptorText": "MICROSOFT*ONECARE800-888-4081WA",
+                        "LegalCorporateName": "MICROSOFT CORPORATION",
+                        "LocationId": "0"
+                      }
+                    ]
+                  }
+                }
+              }
+
+      tags:
+        - Merchant Identifier
+
+definitions:
+  MerchantIdentifierResponse:
+    properties:
+      MerchantIds:
+        $ref: '#/definitions/MerchantIds'
+
+  MerchantIds:
+    properties:
+      Message:
+        type: string
+        description: Identifies the number of merchants found based on a request.
+        example: At least one merchant
+      ReturnedMerchants:
+        $ref: '#/definitions/ReturnedMerchants'
+
+  ReturnedMerchants:
+    properties:
+      Merchant:
+        type: array
+        items:
+          $ref: '#/definitions/Merchant'
+
+  Merchant:
+    properties:
+      Address:
+        $ref: '#/definitions/Address'
+      PhoneNumber:
+        type: string
+        description: The phone number of the merchant.
+        example: 6361115252
+      BrandName:
+        type: string
+        description: The brand name of the merchant.
+        example: REAL NETWORKS
+      MerchantCategory:
+        type: string
+        example: 3516 - LAQUINTA INNS
+        description: Merchant category code and description associated with the merchant category code for the merchant.  5814 - FAST FOOD RESTAURANTS, 5541 - SERVICE STATIONS WITH OR WITHOUT ANCILLARY SERVICE, 5735 - RECORD SHOPS, 5971 - ART DEALERS AND GALLERIES
+      MerchantDbaName:
+        type: string
+        description: Name under which the merchant is 'doing business as'.
+        example: COMFORT SUITES
+      DescriptorText:
+        type: string
+        description: Descriptor for the merchant provided by the Merchant Service Provider (MSP).
+        example: COMFORTSUITESGRANTVILLEPA
+      LegalCorporateName:
+        type: string
+        description: Corporate legal name of the merchant.
+        example: COMFORT SUITES
+      BrickCount:
+        type: string
+        description: Count of transactions for the descriptor for brick and mortar merchants found in MasterCard's Clearing System.
+        example: 100
+      Comment:
+        type: string
+        description: Notes or comments returned about the merchant.
+        example: Real Networks owns subscription-based online entertainment services Rhapsody, SuperPass, and RealArcade.
+      LocationId:
+        type: integer
+        description: Merchant specific location identifier.
+        example: 268276152
+      OnlineCount:
+        type: integer
+        description: Count of transactions for the descriptor for online merchants found in MasterCard's Clearing System.
+        example: 7
+      OtherCount:
+        type: integer
+        description: Count of transactions for the descriptor for other than brick and mortar or online merchants found in MasterCard's Clearing System.
+        example: 0
+      SoleProprietorName:
+        type: string
+        description: " "
+        example: NULL
+
+  Address:
+    properties:
+      Line1:
+        type: string
+        description: Line 1 of the street address of the merchant. Usually includes the street number and name.
+        example: 42 ELM AVENUE
+      Line2:
+        type: string
+        description: Line 2 of the street address, usually an apartment number or suite number.
+        example: Suite 100
+      City:
+        type: string
+        description: Name of the city or town where the merchant is located.
+        example: CHICAGO
+      PostalCode:
+        type: string
+        description: Zip code or postal code.
+        example: 60601
+      CountrySubdivision:
+        $ref: '#/definitions/CountrySubdivision'
+      Country:
+        $ref: '#/definitions/Country'
+
+
+  CountrySubdivision:
+    properties:
+      Name:
+        type: string
+        description: Name of the state or province.
+        example: Missouri
+      Code:
+        type: string
+        maxLength: 2
+        description: Abbreviated code for the state or province.
+        example: MO
+
+  Country:
+    properties:
+      Name:
+        type: string
+        description: The name of the country in which the merchant is located.
+        example: United States
+      Code:
+        type: string
+        description: Three digit alpha country code as defined in ISO 3166-1.
+        example: USA
+
+  ErrorsResponse:
+    properties:
+      Errors:
+        $ref: '#/definitions/Errors'
+
+  Errors:
+    properties:
+      Error:
+        type: array
+        items:
+          $ref: '#/definitions/Error'
+  Error:
+    properties:
+      Source:
+        type: string
+        description: This is the unique identifier that attempts to define the field in error when available.  If a specific field can't be identified System will be returned.
+        example: Atms.Atm.Location.Address.Line1
+      ReasonCode:
+        type: string
+        description: This will identify the reason for the error.
