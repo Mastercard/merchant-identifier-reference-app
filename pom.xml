@@ -1,257 +1,134 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-    Copyright 2016 MasterCard International.
-
-    Redistribution and use in source and binary forms, with or without modification, are
-    permitted provided that the following conditions are met:
-
-    Redistributions of source code must retain the above copyright notice, this list of
-    conditions and the following disclaimer.
-    Redistributions in binary form must reproduce the above copyright notice, this list of
-    conditions and the following disclaimer in the documentation and/or other materials
-    provided with the distribution.
-    Neither the name of the MasterCard International Incorporated nor the names of its
-    contributors may be used to endorse or promote products derived from this software
-    without specific prior written permission.
-    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
-    EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
-    OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT
-    SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
-    INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED
-    TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
-    OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER
-    IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
-    IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
-    SUCH DAMAGE.
--->
-
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.mastercard.refapp</groupId>
-    <artifactId>ref-impl-merchant-identifier</artifactId>
+
+    <groupId>com.mastercard.merchantIdentifier</groupId>
+    <artifactId>merchantidentifier-api-reference-app</artifactId>
     <version>1.0.0</version>
-    <packaging>war</packaging>
+    <name>merchant-identifier-api-reference-app</name>
+    <description>Reference Application for the Merchant Identifier API</description>
 
     <properties>
+        <java.version>11</java.version>
+        <maven.compiler.source>${java.version}</maven.compiler.source>
+        <maven.compiler.target>${java.version}</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <java.version>1.7</java.version>
-        <spring.version>3.2.17.RELEASE</spring.version>
-        <jackson.version>2.10.0</jackson.version>
-        <slf4j.version>1.7.21</slf4j.version>
-        <log4j2.version>2.13.3</log4j2.version>
-        <mockito.version>2.2.9</mockito.version>
+        <okhttp-version>4.5.0</okhttp-version>
     </properties>
 
     <dependencies>
+        <!--        This dependency is for signing the request to send to Mastercard    -->
         <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>servlet-api</artifactId>
-            <version>2.5</version>
-            <scope>provided</scope>
+            <groupId>com.mastercard.developer</groupId>
+            <artifactId>oauth1-signer</artifactId>
+            <version>1.5.0</version>
+            <!-- See: https://github.com/Mastercard/oauth1-signer-java/releases -->
         </dependency>
 
         <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-context</artifactId>
-            <version>${spring.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>commons-logging</groupId>
-                    <artifactId>commons-logging</artifactId>
-                </exclusion>
-            </exclusions>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.8.6</version>
         </dependency>
-        <dependency>
-            <groupId>com.mastercard.api</groupId>
-            <artifactId>merchant-identifier</artifactId>
-            <version>1.0.3</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-webmvc</artifactId>
-            <version>${spring.version}</version>
-        </dependency>
-
         <dependency>
             <groupId>io.swagger</groupId>
             <artifactId>swagger-annotations</artifactId>
-            <version>1.5.10</version>
+            <version>1.6.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.code.findbugs</groupId>
+            <artifactId>jsr305</artifactId>
+            <version>3.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>io.gsonfire</groupId>
+            <artifactId>gson-fire</artifactId>
+            <version>1.8.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <version>1.7.21</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.oltu.oauth2</groupId>
+            <artifactId>org.apache.oltu.oauth2.client</artifactId>
+            <version>1.0.1</version>
         </dependency>
 
         <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-core</artifactId>
-            <version>${jackson.version}</version>
+            <groupId>javax.annotation</groupId>
+            <artifactId>javax.annotation-api</artifactId>
+            <version>1.3.2</version>
         </dependency>
         <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-            <version>${jackson.version}</version>
+            <groupId>com.squareup.okhttp3</groupId>
+            <artifactId>okhttp</artifactId>
+            <version>${okhttp-version}</version>
         </dependency>
         <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-annotations</artifactId>
-            <version>${jackson.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <version>${slf4j.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>jcl-over-slf4j</artifactId>
-            <version>${slf4j.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>jul-to-slf4j</artifactId>
-            <version>${slf4j.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>log4j-over-slf4j</artifactId>
-            <version>${slf4j.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-core</artifactId>
-            <version>${log4j2.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-slf4j-impl</artifactId>
-            <version>${log4j2.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-test</artifactId>
-            <version>${spring.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.mockito</groupId>
-            <artifactId>mockito-core</artifactId>
-            <version>${mockito.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.mock-server</groupId>
-            <artifactId>mockserver-netty</artifactId>
-            <version>3.10.4</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.jayway.jsonpath</groupId>
-            <artifactId>json-path</artifactId>
-            <version>0.9.1</version>
-            <scope>test</scope>
+            <groupId>com.squareup.okhttp3</groupId>
+            <artifactId>logging-interceptor</artifactId>
+            <version>${okhttp-version}</version>
         </dependency>
     </dependencies>
 
     <build>
-        <finalName>${project.artifactId}</finalName>
-        <filters>
-            <filter>src/main/resources/google-maps.properties</filter>
-        </filters>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.6.0</version>
-                <configuration>
-                    <source>${java.version}</source>
-                    <target>${java.version}</target>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>io.swagger</groupId>
-                <artifactId>swagger-codegen-maven-plugin</artifactId>
-                <version>2.2.1</version>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.2.4</version>
                 <executions>
                     <execution>
-                        <phase>generate-sources</phase>
+                        <phase>package</phase>
                         <goals>
-                            <goal>generate</goal>
+                            <goal>shade</goal>
                         </goals>
                         <configuration>
-                            <inputSpec>${project.basedir}/api.yaml</inputSpec>
-                            <language>java</language>
-                            <library>jersey2</library>
-                            <output>${project.build.directory}/generated-sources</output>
-                            <modelPackage>com.mastercard.refapp.merchantid.generated.model</modelPackage>
-                            <environmentVariables>
-                                <models/>
-                                <modelDocs>false</modelDocs>
-                            </environmentVariables>
-                            <configOptions>
-                                <dateLibrary>legacy</dateLibrary>
-                            </configOptions>
+                            <minimizeJar>true</minimizeJar>
+                            <createDependencyReducedPom>false</createDependencyReducedPom>
+                            <transformers>
+                                <transformer implementation=
+                                                     "org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                    <mainClass>com.mastercard.merchantidentifier.MerchantIdentifierApp</mainClass>
+                                </transformer>
+                            </transformers>
+                            <outputDirectory>${project.build.outputDirectory}</outputDirectory>
+                            <finalName>${project.artifactId}-${project.version}</finalName>
+
                         </configuration>
                     </execution>
                 </executions>
             </plugin>
+
             <plugin>
-                <groupId>org.apache.tomcat.maven</groupId>
-                <artifactId>tomcat7-maven-plugin</artifactId>
-                <version>2.2</version>
-                <configuration>
-                    <port>9090</port>
-                    <path>/${project.build.finalName}</path>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.19.1</version>
-            </plugin>
-            <plugin>
-                <groupId>com.github.warmuuh</groupId>
-                <artifactId>libsass-maven-plugin</artifactId>
-                <version>0.1.3</version>
+                <groupId>org.openapitools</groupId>
+                <artifactId>openapi-generator-maven-plugin</artifactId>
+                <version>4.3.0</version>
                 <executions>
                     <execution>
-                        <phase>generate-resources</phase>
+                        <id>Merchant Identifier REST Client</id>
                         <goals>
-                            <goal>compile</goal>
+                            <goal>generate</goal>
                         </goals>
+                        <configuration>
+                            <inputSpec>${project.basedir}/src/main/resources/merchant-identifier-api-spec.yaml</inputSpec>
+                            <generatorName>java</generatorName>
+                            <library>okhttp-gson</library>
+                            <configurationFile>${project.basedir}/src/main/resources/openapi-config.json</configurationFile>
+                            <generateApiTests>false</generateApiTests>
+                            <generateModelTests>false</generateModelTests>
+                            <configOptions>
+                                <sourceFolder>src/gen/java/main</sourceFolder>
+                            </configOptions>
+
+                        </configuration>
                     </execution>
                 </executions>
-                <configuration>
-                    <inputPath>${basedir}/src/main/sass/</inputPath>
-                    <outputPath>${project.build.directory}/ref-impl-merchant-identifier/WEB-INF/static/css/</outputPath>
-                    <includePath>${basedir}/src/main/sass/plugins/</includePath>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-war-plugin</artifactId>
-                <version>3.0.0</version>
-                <configuration>
-                    <webResources>
-                        <resource>
-                            <filtering>true</filtering>
-                            <directory>src/main/webapp/WEB-INF/static</directory>
-                            <includes>
-                                <include>**/*.html</include>
-                            </includes>
-                            <targetPath>WEB-INF/static</targetPath>
-                        </resource>
-                    </webResources>
-                </configuration>
             </plugin>
         </plugins>
     </build>
-
-    <profiles>
-        <profile>
-            <id>demo</id>
-        </profile>
-    </profiles>
-
 </project>

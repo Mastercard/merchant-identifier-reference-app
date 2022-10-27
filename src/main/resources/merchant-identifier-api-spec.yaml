@@ -1,0 +1,288 @@
+openapi: 3.0.1
+info:
+  title: Merchant Identifier Referance API
+  description: Mastercard DW EDS Merchant Identifier Refereance API
+  termsOfService: "https://developer.mastercard.com/terms-of-use"
+  contact:
+    name: MasterCard Developers
+    url: https://developer.mastercard.com/
+    email: developers@mastercard.com
+  version: 1.0.0
+servers:
+  - url: https://api.mastercard.com/merchant-identifier/merchants
+    description: Production server (uses live data)
+  - url: https://sandbox.api.mastercard.com/merchant-identifier/merchants #https://sandbox.api.mastercard.com/merchant-identifier/merchants
+    description: Sandbox server (testing environment)
+tags:
+  - name: Merchant Ids
+    description: Merchant descriptor and locator information Controller
+paths:
+  /merchants:
+    get:
+      tags:
+        - MerchantId
+      summary: Get all active merchantids
+      description: 'Returns merchant descriptor and locator information based on the criteria you provide. Information returned includes merchant DBA name, merchant category code (MCC), street address, city, state, postal code, country, and sales channels.'
+      operationId: getMerchantIds
+      parameters:
+        - name: merchant_descriptor
+          in: query
+          description: 'Merchant s name as provided by the acquirer (i.e. descriptor found on a cardholder statement). Example: DOLIUMPTYLTDWELSHPOOLWA'
+          required: false
+          schema:
+            type: String
+            default: +DOLIUMPTYLTDWELSHPOOLWA
+            example: +DOLIUMPTYLTDWELSHPOOLWA
+        - name: match_type
+          in: query
+          description: 'Determines how the search is performed. ExactMatch returns either the one merchant that best fits the description or no results at all. FuzzyMatch returns 0-20 merchants that are similar to the transaction descriptor. If Type is not provided, defaults to ExactMatch. Example: FuzzyMatch'
+          required: false
+          schema:
+            type: string
+            default: +ExactMatch
+            example: +FuzzyMatch
+      responses:
+        200:
+          description: Successfully retrieved merchant category codes
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MerchantList'
+        400:
+          $ref: '#/components/responses/BadRequestError'
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        403:
+          $ref: '#/components/responses/ForbiddenError'
+      deprecated: false
+components:
+  responses:
+    BadRequestError:
+      description: Something was wrong with the request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            Errors:
+              - Error:
+                  Source: merchant-identifier-referance-api
+                  ReasonCode: INVALID_REQUEST
+                  Description: "Method argument type is invalid"
+                  Recoverable: true
+                  Details: null
+    UnauthorizedError:
+      description: Authentication information was missing or invalid.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            Errors:
+              - Error:
+                  Source: Gateway
+                  ReasonCode: UNAUTHORIZED
+                  Description: "Project doesn't have access to the requested service"
+                  Recoverable: false
+                  Details: "Full authentication is required to access this resource"
+    ForbiddenError:
+      description: Insufficient permissions for interacting with the resource.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            Errors:
+              - Error:
+                  Source: Gateway
+                  ReasonCode: PERMISSION_DENIED
+                  Description: "You don't seem authorized to do that"
+                  Recoverable: false
+    NotFoundError:
+      description: URI didn't match an existing resource.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            Errors:
+              - Error:
+                  Source: merchant-identifier-referance-api
+                  ReasonCode: ENTITY_NOT_FOUND
+                  Description: "You requested something we don't have"
+                  Recoverable: false
+                  Details: null
+  schemas:
+    ErrorResponse:
+      description: Only returned in the event of an error condition
+      type: object
+      required:
+        - Errors
+      properties:
+        Errors:
+          type: object
+          required:
+            - Error
+          properties:
+            Error:
+              $ref: '#/components/schemas/Errors'
+    Errors:
+      type: array
+      minItems: 1
+      description: Only returned in the event of an error condition
+      items:
+        $ref: '#/components/schemas/Error'
+    Error:
+      type: object
+      description: >-
+        Details of the error condition such as the source of the error, reason code for the error,
+        if the error is recoverable, and details about the error
+      required:
+        - Source
+        - ReasonCode
+        - Description
+        - Recoverable
+      properties:
+        Source:
+          description: The application that generated this error
+          type: string
+          minLength: 0
+          maxLength: 150
+          example: merchant-identifier-referance-api
+        ReasonCode:
+          description: A unique constant identifying the error case encountered during transaction processing
+          type: string
+          minLength: 0
+          maxLength: 150
+          example: INVALID_REQUEST
+        Description:
+          description: Short description of the ReasonCode field
+          type: string
+          minLength: 0
+          maxLength: 150
+          example: Data value or format is invalid
+        Recoverable:
+          description: Indicates whether this error will always be returned for this request, or retrying could change the outcome
+          type: boolean
+          example: true
+        Details:
+          description: Description of the issue
+          type: string
+          minLength: 0
+          maxLength: 150
+    MerchantList:
+      allOf:
+        - type: object
+          description: Paged response of Merchant Category Codes
+          required:
+            - merchants
+          properties:
+            message:
+              type: string
+              example: 'At least one merchant'
+              description: Identifies the number of merchants found based on a request.
+            merchants:
+              type: array
+              description: Array of List of matching returned merchants
+              items:
+                $ref: '#/components/schemas/Merchant'
+    Merchant:
+      title: merhcant
+      required:
+        - matchConfidenceScore
+        - brandName
+      type: object
+      properties:
+        address:
+          $ref: '#/components/schemas/Address'
+        brandName:
+          type: string
+          example: 'FAMOUS FOOTWEAR'
+          description: The brand name of the merchant.
+        merchantDescriptor:
+          type: string
+          example: 'DOLIUMPTYLTDWELSHPOOLWA'
+          description: Descriptor for the merchant provided by the Merchant Service Provider(MSP)
+        legalCorporateName:
+          type: string
+          example: 'DOLIUM PTY LTD'
+          description: Corporate legal name of the merchant
+        locationId:
+          type: integer
+          format: int32
+          example: 344147943
+          description: Merchant specific location identifier
+        matchConfidenceScore:
+          type: integer
+          format: int32
+          example: 100
+          description: Confidence score (%) to help clients understand the quality of the search results.
+        merchantCategory:
+          type: string
+          example: '5533 - AUTOMOTIVE PARTS  ACCESSORIES STORES'
+          description: Merchant category code and description associated with the merchant category code for the merchant. 5814 - FAST FOOD RESTAURANTS, 5541 - SERVICE STATIONS WITH OR WITHOUT ANCILLARY SERVICE, 5735 - RECORD SHOPS, 5971 - ART DEALERS AND GALLERIES
+        merchantDbaName:
+          type: string
+          example: 'DOLIUM PTY LTD'
+          description: Name under which the merchant is 'doing business as
+        phoneNumber:
+          type: string
+          example: '8888888888'
+          description: The phone number of the merchant.
+          #comment:
+          #type: string
+          #example: '100'
+          #description: Notes or comments returned about the merchant
+        soleProprietorName:
+          type: string
+          example: 'DOLIUMPTYLTDWELSHPOOLWA'
+          description: Sole proprietor name of the merchant
+
+    Address:
+      title: address
+      type: object
+      properties:
+        line1:
+          type: string
+          example: 'UNIT 2 248 WELSHPOOL RD'
+          description: Line 1 of the street address of the merchant. Usually includes the street number and name.
+        line2:
+          type: string
+          example: 'line2'
+          description: Line 2 of the street address, usually an apartment number or suite number.
+        city:
+          type: string
+          example: 'WELSHPOOL'
+          description: Name of the city or town where the merchant is located.
+        postalCode:
+          type: string
+          example: '12345'
+          description: Postal code of the city or town where the merchant is located.
+        countrySubdivision:
+          $ref: '#/components/schemas/CountrySubdivision'
+        country:
+          $ref: '#/components/schemas/Country'
+    CountrySubdivision:
+      title: countrySubDivision
+      type: object
+      properties:
+        code:
+          type: string
+          example: 'WA'
+          description: Abbreviated code for the state or province.
+        name:
+          type: string
+          example: 'WASHINGTON'
+          description: Name of the state or province.
+    Country:
+      title: country
+      type: object
+      properties:
+        code:
+          type: string
+          example: 'AUS'
+          description: Three digit alpha country code as defined in ISO 3166-1
+        name:
+          type: string
+          example: 'AUSTRALIA'
+          description: Name of the country
