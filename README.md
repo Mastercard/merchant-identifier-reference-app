@@ -75,7 +75,7 @@ This application illustrates connecting to the Merchant Identifier API using Mas
 ### Build and Execute <a name="build-and-execute"> </a>
 1. Run `mvn clean install` from the root of the project directory.
     * When install is run, the [OpenAPI Generator plugin](#integrating-with-openapi-generator) will generate the sources for connecting to the Merchant Identifier API.
-2. run `java -jar target/merchant-identifier-reference-app-X.X.X.jar` to start the project.
+2. run `java -jar target/merchantidentifier-api-reference-app-X.X.X.jar` to start the project.
     - **Notice**: Replace `X` with version of the reference app.
     - **Example**: `java -jar target/merchantidentifier-api-reference-app-1.0.0.jar`
 
