@@ -127,26 +127,33 @@ These are the parameters used for the Merchant Identifier API.
 
 | Name                  | Type      | Default Value      | Purpose       |
 |-----------------------|-----------|--------------------|---------------|
-| merchant_descriptor   | string    | 0                  | For finding merchant list with identifier.        |
-| match_type            | string    | ExactMatch         | For type of the search to be performed with merchant identifier |
+| merchant_descriptor   | string    | 0                  | To find merchant list with identifier.        |
+| match_type            | string    | ExactMatch         | To perform a type of the search for merchant identifiers |
+| card_acceptor_id      | string    | -                  | To find merchant list matched by card acceptor id |
 
 
 > Get information on a Merchant Identifier. 
 
-| MerchantIdentfier API URL     | Method        | Parameters          | Request Model | Response model            |
-|-------------------------------|---------------|---------------------|---------------|---------------------------|
-| /merchants                    | GET           | merchant_descriptor | string        | merchant list with address|
+| MerchantIdentfier API URL         | Method        | Parameters                        | Request Model | Response model            |
+|-----------------------------------|---------------|-----------------------------------|---------------|---------------------------|
+| /merchants                        | GET           | merchant_descriptor, match_type   | string        | merchant list with address and merchant descriptor |
+| /merchants-by-card-acceptor-ids   | GET           | card_acceptor_id                  | string        | merchant list with address and card acceptor id |
 
 
 ## API Reference <a name="api-reference"></a>
 
 ### Reference Application API Reference <a name="ref-app-api-reference"></a>
 
-| Reference App URL                 | Parameters          | Reference App Usage             | Merchant Identifier Endpoint Used  |
-|-----------------------------------|---------------------|---------------------------------|-----------------------|
-|**/merchant-identifier/merchants** | merchant_descriptor | Search for merchant list with merchant identifier by match type| /merchant-identifier/merchants |
+| Reference App URL                                         | Parameters                        | Reference App Usage                                               | Merchant Identifier Endpoint Used                     |
+|-----------------------------------------------------------|-----------------------------------|-------------------------------------------------------------------|-------------------------------------------------------|
+|**/merchant-identifier/merchants**                         | merchant_descriptor, match_type   | Search for merchant list with merchant identifier by match type   | /merchant-identifier/merchants                        |
+|**/merchant-identifier/merchants-by-card-acceptor-ids**    | card_acceptor_id                  | Search for merchant list with card acceptor id                    | /merchant-identifier/merchants-by-card-acceptor-ids   |
 
-Example Search Request in a rest client  of your choice: `https://sandbox.api.mastercard.com/merchant-identifier/merchants?merchant_descriptor=DOLIUMPTYLTDWELSHPOOLWA&match_type=ExactMatch`
+Example Search Requests in a rest client of your choice: 
+* `https://sandbox.api.mastercard.com/merchant-identifier/merchants?merchant_descriptor=DOLIUMPTYLTDWELSHPOOLWA&match_type=ExactMatch`
+* `https://sandbox.api.mastercard.com/merchant-identifier/merchants?merchant_descriptor=DOLIUMPTYLTDWELSHPOOLWA&match_type=FuzzyMatch`
+* `https://sandbox.api.mastercard.com/merchant-identifier/merchants-by-card-acceptor-ids?card_acceptor_id=C928456`
+
 
 ### Merchant Identifier API Reference <a name="merchant-identifier-api-reference"></a>
 
